@@ -1,0 +1,59 @@
+/* app/sector/education/page.module.css */
+
+.container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .heading {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2em;
+  }
+  
+  .startupList {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .startupCard {
+    background-color: #f0f0f0; /* Light gray background */
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .startupHeader {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    background-color: #d9d9d9; /* Medium gray for header */
+    cursor: pointer;
+  }
+  
+  .expandIcon {
+    font-size: 0.8em;
+  }
+  
+  .startupContent {
+    padding: 20px;
+    background-color: #f0f0f0; /* Match the card background */
+  }
+  
+  .predictionCircle {
+    width: 80px;
+    height: 80px;
+    background-color: #0070f3; /* Accent blue */
+    border-radius: 50%;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2em;
+    margin-top: 20px;
+  }
+  
