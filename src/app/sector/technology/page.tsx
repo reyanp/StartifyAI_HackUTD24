@@ -51,7 +51,7 @@ export default function TechnologySectorPage() {
       setIsLoading(true);
 
       try {
-        const response = await fetch('http://127.0.0.1:8000/query', {
+        const response = await fetch('http://localhost:8000/query', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ query: userInput }),
@@ -64,14 +64,14 @@ export default function TechnologySectorPage() {
             { user: 'AI', message: data.response },
           ]);
         } else {
-          console.error("Server Error: ", response.status);
+          console.error('Server Error: ', response.status);
           setChatMessages((prevMessages) => [
             ...prevMessages,
             { user: 'AI', message: 'Sorry, something went wrong!' },
           ]);
         }
       } catch (error) {
-        console.error("Network Error: ", error);
+        console.error('Network Error: ', error);
         setChatMessages((prevMessages) => [
           ...prevMessages,
           { user: 'AI', message: 'Error connecting to the server.' },
@@ -145,6 +145,20 @@ export default function TechnologySectorPage() {
                 {expandedStartup === startup.id ? '▲' : '▼'}
               </span>
             </div>
+            {/* Render Expanded Content */}
+            {expandedStartup === startup.id && (
+              <div className="mt-4 bg-gray-100 p-4 rounded-md text-gray-800">
+                <p><strong>Revenue:</strong> ${startup.revenue.toLocaleString()}</p>
+                <p><strong>Growth:</strong> {startup.growth}%</p>
+                <p><strong>Funding:</strong> ${startup.funding.toLocaleString()}</p>
+                <p>
+                  <strong>Analysis:</strong> With a revenue of ${startup.revenue.toLocaleString()}, this startup ranks highly due to its impressive growth rate of {startup.growth}%. Compared to industry benchmarks, it showcases significant potential for scalability and a competitive edge in securing funding (${startup.funding.toLocaleString()} raised so far).
+                </p>
+                <p>
+                  <strong>Future Outlook:</strong> The current trajectory indicates strong market penetration and customer acquisition. Continued investment in innovation and expanding partnerships could further elevate its position as a market leader.
+                </p>
+              </div>
+            )}
           </div>
         ))}
       </div>

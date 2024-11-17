@@ -18,11 +18,12 @@ app = FastAPI()
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3010/sector/technology"],  # Replace "*" with your frontend URL in production
+    allow_origins=["http://localhost:3000"],  # Frontend origin
     allow_credentials=True,
-    allow_methods=["http://localhost:3010/sector/technology"],
-    allow_headers=["http://localhost:3010/sector/technology"],
+    allow_methods=["POST"],
+    allow_headers=["Content-Type"],
 )
+
 
 # Pydantic model for request and response
 class QueryRequest(BaseModel):

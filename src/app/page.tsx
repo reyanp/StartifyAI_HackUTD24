@@ -33,7 +33,7 @@ export default function LandingPage() {
       {/* Main Content */}
       <div className="relative z-10 text-center">
         <h1 className="text-6xl font-extrabold mb-6 animate-fadeIn">
-          Welcome to <span className="text-yellow-300">Stratify</span>
+          Welcome to <span className="text-yellow-300">Startify</span>
         </h1>
 
         {/* Typing Animation */}
