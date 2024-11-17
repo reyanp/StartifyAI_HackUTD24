@@ -6,6 +6,7 @@ import { useState } from 'react';
 export default function TechnologySectorPage() {
   const router = useRouter();
   const [expandedStartup, setExpandedStartup] = useState<number | null>(null);
+  const [showChatBox, setShowChatBox] = useState(false);
 
   const startups = [
     { id: 1, name: 'Nuro', revenue: 1200000000, growth: 25, funding: 2100000000 },
@@ -53,7 +54,7 @@ export default function TechnologySectorPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-900 to-blue-500 text-white flex flex-col items-center px-4 py-10">
+    <div className="min-h-screen bg-gradient-to-b from-blue-900 to-blue-500 text-white flex flex-col items-center px-4 py-10 relative">
       {/* Back Arrow */}
       <div className="absolute top-6 left-6">
         <button
@@ -117,6 +118,41 @@ export default function TechnologySectorPage() {
           </div>
         ))}
       </div>
+
+      {/* Chatbox Button */}
+      <div className="fixed bottom-6 right-6">
+        <button
+          onClick={() => setShowChatBox(!showChatBox)}
+          className="bg-blue-500 text-white px-6 py-3 rounded-full shadow-lg hover:shadow-xl hover:bg-blue-600 transition duration-300 font-semibold"
+        >
+          💬 Chat
+        </button>
+      </div>
+
+      {/* Chatbox */}
+      {showChatBox && (
+        <div className="fixed bottom-16 right-6 bg-white w-80 h-96 rounded-lg shadow-lg flex flex-col overflow-hidden">
+          <div className="bg-blue-500 text-white p-4 font-semibold flex justify-between">
+            <span>AI Assistant</span>
+            <button
+              onClick={() => setShowChatBox(false)}
+              className="text-white hover:text-gray-300 transition duration-300"
+            >
+              ✖
+            </button>
+          </div>
+          <div className="flex-grow p-4 overflow-y-auto">
+            <p className="text-gray-600">Hello! How can I assist you today?</p>
+          </div>
+          <div className="p-4 border-t border-gray-300">
+          <input
+  type="text"
+  placeholder="Type your message..."
+  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black bg-white"
+/>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
