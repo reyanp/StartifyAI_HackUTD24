@@ -7,6 +7,9 @@ export default function TechnologySectorPage() {
   const router = useRouter();
   const [expandedStartup, setExpandedStartup] = useState<number | null>(null);
   const [showChatBox, setShowChatBox] = useState(false);
+  const [chatMessages, setChatMessages] = useState<{ user: string; message: string }[]>([]);
+  const [userInput, setUserInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const startups = [
     { id: 1, name: 'Nuro', revenue: 1200000000, growth: 25, funding: 2100000000 },
@@ -20,7 +23,7 @@ export default function TechnologySectorPage() {
   const maxGrowth = 30;
   const maxFunding = 2100000000;
 
-  const calculateScore = (revenue: number, growth: number, funding: number) => {
+  const calculateScore = (revenue, growth, funding) => {
     const revenueScore = (revenue / maxRevenue) * 40;
     const growthScore = (growth / maxGrowth) * 30;
     const fundingScore = (funding / maxFunding) * 30;
@@ -31,21 +34,56 @@ export default function TechnologySectorPage() {
   const startupsWithScores = startups.map((startup) => ({
     ...startup,
     score: calculateScore(startup.revenue, startup.growth, startup.funding),
-    analysis: `
-      <strong>Score:</strong> ${calculateScore(startup.revenue, startup.growth, startup.funding)}%<br />
-      <strong>Revenue:</strong> $${startup.revenue.toLocaleString()} (contributing ${(startup.revenue / maxRevenue * 40).toFixed(2)}%)<br />
-      <strong>Growth Rate:</strong> ${startup.growth}% (contributing ${(startup.growth / maxGrowth * 30).toFixed(2)}%)<br />
-      <strong>Funding:</strong> $${startup.funding.toLocaleString()} (contributing ${(startup.funding / maxFunding * 30).toFixed(2)}%)<br />
-    `,
   }));
 
   const sortedStartups = [...startupsWithScores].sort((a, b) => b.score - a.score);
 
-  const toggleExpansion = (id: number) => {
+  const toggleExpansion = (id) => {
     setExpandedStartup(expandedStartup === id ? null : id);
   };
 
-  const getColorForPrediction = (score: number) => {
+  const handleChatSubmit = async () => {
+    if (userInput.trim()) {
+      setChatMessages((prevMessages) => [
+        ...prevMessages,
+        { user: 'You', message: userInput },
+      ]);
+      setIsLoading(true);
+
+      try {
+        const response = await fetch('http://127.0.0.1:8000/query', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: userInput }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setChatMessages((prevMessages) => [
+            ...prevMessages,
+            { user: 'AI', message: data.response },
+          ]);
+        } else {
+          console.error("Server Error: ", response.status);
+          setChatMessages((prevMessages) => [
+            ...prevMessages,
+            { user: 'AI', message: 'Sorry, something went wrong!' },
+          ]);
+        }
+      } catch (error) {
+        console.error("Network Error: ", error);
+        setChatMessages((prevMessages) => [
+          ...prevMessages,
+          { user: 'AI', message: 'Error connecting to the server.' },
+        ]);
+      } finally {
+        setIsLoading(false);
+        setUserInput('');
+      }
+    }
+  };
+
+  const getColorForPrediction = (score) => {
     if (score >= 80) return 'bg-green-800';
     if (score >= 60) return 'bg-green-500';
     if (score >= 40) return 'bg-yellow-500';
@@ -107,14 +145,6 @@ export default function TechnologySectorPage() {
                 {expandedStartup === startup.id ? '▲' : '▼'}
               </span>
             </div>
-            {expandedStartup === startup.id && (
-              <div className="mt-4 animate-fadeIn">
-                <div
-                  className="bg-gradient-to-r from-gray-100 to-gray-300 p-4 rounded-md shadow-inner"
-                  dangerouslySetInnerHTML={{ __html: startup.analysis }}
-                ></div>
-              </div>
-            )}
           </div>
         ))}
       </div>
@@ -142,14 +172,26 @@ export default function TechnologySectorPage() {
             </button>
           </div>
           <div className="flex-grow p-4 overflow-y-auto">
-            <p className="text-gray-600">Hello! How can I assist you today?</p>
+            {chatMessages.map((msg, idx) => (
+              <div
+                key={`msg-${idx}`}
+                className={`mb-2 ${msg.user === 'You' ? 'text-right' : 'text-left'} text-black`}
+              >
+                <span className="font-semibold">{msg.user}: </span>
+                <span>{msg.message}</span>
+              </div>
+            ))}
+            {isLoading && <p className="text-gray-500">Typing...</p>}
           </div>
           <div className="p-4 border-t border-gray-300">
-          <input
-  type="text"
-  placeholder="Type your message..."
-  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black bg-white"
-/>
+            <input
+              type="text"
+              placeholder="Type your message..."
+              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black bg-white"
+              value={userInput}
+              onChange={(e) => setUserInput(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleChatSubmit()}
+            />
           </div>
         </div>
       )}
