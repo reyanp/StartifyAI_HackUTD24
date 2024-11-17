@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -19,3 +21,40 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+@keyframes move {
+  100% {
+    transform: translate3d(0, 0, 1px) rotate(360deg);
+  }
+}
+
+.background {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background: #0e4fa4;
+  overflow: hidden;
+  z-index: -1; /* Place the animation behind other content */
+}
+
+.background span {
+  width: 20vmin;
+  height: 20vmin;
+  border-radius: 20vmin;
+  backface-visibility: hidden;
+  position: absolute;
+  animation: move infinite linear;
+}
+
+.background span:nth-child(0) {
+  color: #adc2ff;
+  top: 86%;
+  left: 56%;
+  animation-duration: 20s;
+  animation-delay: -44s;
+  transform-origin: -6vw -4vh;
+  box-shadow: 40vmin 0 5.204213625643267vmin currentColor;
+}
+
+/* ... Add the rest of your nth-child rules as provided */

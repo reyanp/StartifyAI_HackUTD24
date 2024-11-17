@@ -1,8 +1,6 @@
-// app/sector/education/page.tsx
 'use client';
 
 import { useState } from 'react';
-import styles from './page.module.css';
 
 export default function EducationSectorPage() {
   const [expandedStartup, setExpandedStartup] = useState<number | null>(null);
@@ -27,26 +25,51 @@ export default function EducationSectorPage() {
     setExpandedStartup(expandedStartup === id ? null : id);
   };
 
+  // Determine the color based on the prediction value
+  const getColorForPrediction = (prediction: number) => {
+    if (prediction >= 80) return 'bg-green-800';
+    if (prediction >= 60) return 'bg-green-500';
+    if (prediction >= 40) return 'bg-yellow-500';
+    if (prediction >= 20) return 'bg-orange-500';
+    return 'bg-red-800';
+  };
+
   return (
-    <div className={styles.container}>
-      <h1 className={styles.heading}>Top 10 Education Startups</h1>
-      <div className={styles.startupList}>
+    <div className="min-h-screen bg-gradient-to-b from-blue-900 to-blue-500 text-white flex flex-col items-center px-4 py-10">
+      {/* Heading */}
+      <h1 className="text-4xl font-extrabold mb-10 text-center animate-fadeIn">
+        Top 10 <span className="text-yellow-300">Education</span> Startups
+      </h1>
+
+      {/* Startups List */}
+      <div className="w-full max-w-4xl space-y-6">
         {sortedStartups.map((startup) => (
-          <div key={startup.id} className={styles.startupCard}>
+          <div
+            key={startup.id}
+            className={`bg-white text-gray-800 p-6 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 ${
+              expandedStartup === startup.id ? 'shadow-xl' : ''
+            }`}
+          >
             <div
-              className={styles.startupHeader}
+              className="flex justify-between items-center cursor-pointer text-lg font-semibold"
               onClick={() => toggleExpansion(startup.id)}
             >
               <span>{startup.name}</span>
-              <span className={styles.expandIcon}>
+              <span className="text-blue-500">
                 {expandedStartup === startup.id ? '▲' : '▼'}
               </span>
             </div>
             {expandedStartup === startup.id && (
-              <div className={styles.startupContent}>
-                <p>{startup.analysis}</p>
-                <div className={styles.predictionCircle}>
-                  {startup.prediction}%
+              <div className="mt-4 animate-fadeIn">
+                <p className="text-gray-700 mb-4">{startup.analysis}</p>
+                <div className="flex items-center justify-center">
+                  <div
+                    className={`w-20 h-20 rounded-full text-white flex items-center justify-center text-lg font-bold animate-bounce ${
+                      getColorForPrediction(startup.prediction)
+                    }`}
+                  >
+                    {startup.prediction}%
+                  </div>
                 </div>
               </div>
             )}

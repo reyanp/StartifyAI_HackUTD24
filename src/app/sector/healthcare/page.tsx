@@ -38,7 +38,7 @@ export default function EducationSectorPage() {
     <div className="min-h-screen bg-gradient-to-b from-blue-900 to-blue-500 text-white flex flex-col items-center px-4 py-10">
       {/* Heading */}
       <h1 className="text-4xl font-extrabold mb-10 text-center animate-fadeIn">
-        Top 10 <span className="text-yellow-300">Technology</span> Startups
+        Top 10 <span className="text-yellow-300">Healthcare</span> Startups
       </h1>
 
       {/* Startups List */}
