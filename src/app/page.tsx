@@ -7,15 +7,21 @@ export default function LandingPage() {
   const [displayedText, setDisplayedText] = useState('');
 
   const fullText =
-    'Unlock insights to identify the next big startups and make smarter decisions. Let’s shape the future of innovation together.';
+    ' EEmpowering Insights, Shaping Futures, and Unlocking the Potential of Tomorrow’s Innovations.';
 
   useEffect(() => {
     let index = 0;
+
+    // Typing animation logic
     const interval = setInterval(() => {
-      setDisplayedText((prev) => prev + fullText[index]);
-      index++;
-      if (index === fullText.length) clearInterval(interval);
+      if (index < fullText.length) {
+        setDisplayedText((prev) => prev + fullText.charAt(index)); // Use charAt to avoid undefined
+        index++;
+      } else {
+        clearInterval(interval); // Stop the interval when all characters are typed
+      }
     }, 50); // Typing speed: 50ms per character
+
     return () => clearInterval(interval);
   }, [fullText]);
 
@@ -27,12 +33,15 @@ export default function LandingPage() {
       {/* Main Content */}
       <div className="relative z-10 text-center">
         <h1 className="text-6xl font-extrabold mb-6 animate-fadeIn">
-          Welcome to <span className="text-yellow-300">Startify</span>
+          Welcome to <span className="text-yellow-300">Stratify</span>
         </h1>
-        <p className="text-lg md:text-xl max-w-2xl mx-auto mb-10 animate-fadeIn">
+
+        {/* Typing Animation */}
+        <p className="text-lg md:text-xl max-w-3xl mx-auto mb-10 whitespace-pre-line animate-fadeIn">
           {displayedText}
-          <span className="animate-blink">|</span>
+          <span className={displayedText.length < fullText.length ? 'animate-blink' : ''}>|</span>
         </p>
+
         <div className="space-y-4">
           <Link
             href="/register"

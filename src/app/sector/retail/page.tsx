@@ -1,44 +1,90 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-export default function EducationSectorPage() {
+export default function RetailSectorPage() {
+  const router = useRouter();
   const [expandedStartup, setExpandedStartup] = useState<number | null>(null);
 
   const startups = [
-    { id: 1, name: 'Startup 1', analysis: 'Analysis for Startup 1', prediction: 85 },
-    { id: 2, name: 'Startup 2', analysis: 'Analysis for Startup 2', prediction: 70 },
-    { id: 3, name: 'Startup 3', analysis: 'Analysis for Startup 3', prediction: 55 },
-    { id: 4, name: 'Startup 4', analysis: 'Analysis for Startup 4', prediction: 62 },
-    { id: 5, name: 'Startup 5', analysis: 'Analysis for Startup 5', prediction: 32 },
-    { id: 6, name: 'Startup 6', analysis: 'Analysis for Startup 6', prediction: 19 },
-    { id: 7, name: 'Startup 7', analysis: 'Analysis for Startup 7', prediction: 58 },
-    { id: 8, name: 'Startup 8', analysis: 'Analysis for Startup 8', prediction: 72 },
-    { id: 9, name: 'Startup 9', analysis: 'Analysis for Startup 9', prediction: 71 },
-    { id: 10, name: 'Startup 10', analysis: 'Analysis for Startup 10', prediction: 97 },
+    { id: 1, name: 'by Humankind', revenue: 20000000, growth: 15, funding: 1000000 },
+    { id: 2, name: 'Nuro', revenue: 1200000000, growth: 25, funding: 5 },
+    { id: 3, name: 'Open', revenue: 16000000, growth: 10, funding: 16400000 },
+    { id: 4, name: 'Realworld', revenue: 50000000, growth: 22, funding: 40 },
+    { id: 5, name: 'Beauty Wellness', revenue: 14000000, growth: 25, funding: 10000000 },
   ];
 
-  // Sort startups by prediction accuracy in descending order
-  const sortedStartups = [...startups].sort((a, b) => b.prediction - a.prediction);
+  // Constants for max values
+  const maxRevenue = 1200000000; // Max revenue in dataset
+  const maxGrowth = 25; // Max growth in dataset
+  const maxFunding = 16400000; // Max funding in dataset
+
+  // Scoring algorithm
+  const calculateScore = (revenue: number, growth: number, funding: number) => {
+    const revenueScore = (revenue / maxRevenue) * 40; // 40% weight
+    const growthScore = (growth / maxGrowth) * 30; // 30% weight
+    const fundingScore = (funding / maxFunding) * 30; // 30% weight
+
+    return Math.round(revenueScore + growthScore + fundingScore);
+  };
+
+  // Generate startups with scores and detailed analysis
+  const startupsWithScores = startups.map((startup) => ({
+    ...startup,
+    score: calculateScore(startup.revenue, startup.growth, startup.funding),
+    analysis: `
+      This startup scored <strong>${calculateScore(
+        startup.revenue,
+        startup.growth,
+        startup.funding
+      )}%</strong> based on:<br />
+      - <span class="font-semibold text-blue-600">Revenue:</span> $${startup.revenue.toLocaleString()} (contributing ${(startup.revenue / maxRevenue * 40).toFixed(2)}%).<br />
+      - <span class="font-semibold text-green-600">Growth Rate:</span> ${startup.growth}% (contributing ${(startup.growth / maxGrowth * 30).toFixed(2)}%).<br />
+      - <span class="font-semibold text-yellow-600">Funding:</span> $${startup.funding.toLocaleString()} (contributing ${(startup.funding / maxFunding * 30).toFixed(2)}%).<br />
+    `,
+  }));
+
+  // Sort startups by score
+  const sortedStartups = [...startupsWithScores].sort((a, b) => b.score - a.score);
 
   const toggleExpansion = (id: number) => {
     setExpandedStartup(expandedStartup === id ? null : id);
   };
 
-  // Determine the color based on the prediction value
-  const getColorForPrediction = (prediction: number) => {
-    if (prediction >= 80) return 'bg-green-800';
-    if (prediction >= 60) return 'bg-green-500';
-    if (prediction >= 40) return 'bg-yellow-500';
-    if (prediction >= 20) return 'bg-orange-500';
+  const getColorForPrediction = (score: number) => {
+    if (score >= 80) return 'bg-green-800';
+    if (score >= 60) return 'bg-green-500';
+    if (score >= 40) return 'bg-yellow-500';
+    if (score >= 20) return 'bg-orange-500';
     return 'bg-red-800';
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-900 to-blue-500 text-white flex flex-col items-center px-4 py-10">
+      {/* Back Arrow */}
+      <div className="absolute top-6 left-6">
+        <button
+          onClick={() => router.push('/dashboard')}
+          className="flex items-center space-x-2 text-blue-300 hover:text-blue-500 transition duration-300"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="2"
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+          <span className="text-lg font-semibold">Back</span>
+        </button>
+      </div>
+
       {/* Heading */}
       <h1 className="text-4xl font-extrabold mb-10 text-center animate-fadeIn">
-        Top 10 <span className="text-yellow-300">Retail</span> Startups
+        Top 5 <span className="text-yellow-300">Retail</span> Startups
       </h1>
 
       {/* Startups List */}
@@ -54,23 +100,26 @@ export default function EducationSectorPage() {
               className="flex justify-between items-center cursor-pointer text-lg font-semibold"
               onClick={() => toggleExpansion(startup.id)}
             >
-              <span>{startup.name}</span>
+              <span className="flex items-center">
+                <div
+                  className={`w-12 h-12 rounded-full text-white flex items-center justify-center text-lg font-bold mr-4 ${
+                    getColorForPrediction(startup.score)
+                  }`}
+                >
+                  {startup.score}%
+                </div>
+                {startup.name}
+              </span>
               <span className="text-blue-500">
                 {expandedStartup === startup.id ? '▲' : '▼'}
               </span>
             </div>
             {expandedStartup === startup.id && (
               <div className="mt-4 animate-fadeIn">
-                <p className="text-gray-700 mb-4">{startup.analysis}</p>
-                <div className="flex items-center justify-center">
-                  <div
-                    className={`w-20 h-20 rounded-full text-white flex items-center justify-center text-lg font-bold animate-bounce ${
-                      getColorForPrediction(startup.prediction)
-                    }`}
-                  >
-                    {startup.prediction}%
-                  </div>
-                </div>
+                <div
+                  className="bg-gradient-to-r from-gray-100 to-gray-300 p-4 rounded-md shadow-inner"
+                  dangerouslySetInnerHTML={{ __html: startup.analysis }}
+                ></div>
               </div>
             )}
           </div>
