@@ -30,7 +30,7 @@ An innovative **investment insights platform** designed to help users analyze an
 - **BeautifulSoup** (Web Scraping)
 - **Pandas** & **NumPy** (Data Processing)
 
-🚀 Deployment
+## 🚀 Deployment
 Frontend
 Deploy your Next.js application using platforms like Vercel or Netlify.
 
@@ -42,7 +42,7 @@ Google Cloud Run
 Heroku
 Docker + Kubernetes
 
-📚 Future Enhancements
+## 📚 Future Enhancements
 Add user authentication and personalization.
 Implement advanced analytics dashboards.
 Integrate additional data sources for richer insights.
