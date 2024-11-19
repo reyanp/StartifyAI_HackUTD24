@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Investment Insights Platform
 
-## Getting Started
+An innovative **investment insights platform** designed to help users analyze and predict the potential success of startups using real-time data scraping, AI-driven analysis, and interactive dashboards. Built with a **Next.js & TypeScript** frontend and a **FastAPI & Python** backend, the platform integrates **ChromaDB** and the **OpenAI API** to provide data-driven predictions and insights.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 **Features**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Real-Time Startup Data Scraping**: Extracts data from trusted sources using Python web scraping tools.
+- **AI-Powered Predictions**: Implements a **Retrieval-Augmented Generation (RAG)** pipeline and ranking algorithms to predict startup success based on metrics like funding rounds, valuations, and more.
+- **Dynamic Chatbot**: Engages users with a conversational interface to answer queries about startups.
+- **Custom Dashboard**: Displays rankings, startup data, and analytics in an intuitive and visually appealing interface.
+- **ChromaDB Integration**: Stores and retrieves relevant documents for AI-driven insights.
+- **Seamless Frontend-Backend Integration**: Communicates efficiently between the frontend (Next.js) and backend (FastAPI).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠️ **Technologies Used**
 
-## Learn More
+### **Frontend**
+- **Next.js** (React Framework)
+- **TypeScript**
+- **Tailwind CSS** (Styling)
 
-To learn more about Next.js, take a look at the following resources:
+### **Backend**
+- **FastAPI**
+- **Python**
+- **ChromaDB**
+- **OpenAI API**
+- **BeautifulSoup** (Web Scraping)
+- **Pandas** & **NumPy** (Data Processing)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
