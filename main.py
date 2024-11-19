@@ -10,7 +10,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from bs4 import BeautifulSoup
 
 # Set your OpenAI API key
-os.environ["OPENAI_API_KEY"] = "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"  # Replace with your OpenAI key
+os.environ["OPENAI_API_KEY"] = ""  # Replace with your OpenAI key
 
 # FastAPI app
 app = FastAPI()
