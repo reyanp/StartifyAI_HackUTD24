@@ -30,3 +30,21 @@ An innovative **investment insights platform** designed to help users analyze an
 - **BeautifulSoup** (Web Scraping)
 - **Pandas** & **NumPy** (Data Processing)
 
+🚀 Deployment
+Frontend
+Deploy your Next.js application using platforms like Vercel or Netlify.
+
+Backend
+Deploy your FastAPI application using platforms like:
+
+AWS Elastic Beanstalk
+Google Cloud Run
+Heroku
+Docker + Kubernetes
+
+📚 Future Enhancements
+Add user authentication and personalization.
+Implement advanced analytics dashboards.
+Integrate additional data sources for richer insights.
+Enhance the chatbot with fine-tuned models.
+Scale the application with microservices and container orchestration.
